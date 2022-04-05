@@ -1,20 +1,15 @@
 package javaschool.epromo;
 
-import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
 import java.util.List;
 
-@Component
 public class Message implements Serializable {
 
     private String tariffName;
     private List<String> tariffOptions;
 
-
     public Message() {
     }
-
 
     public Message(String tariffName, List<String> tariffOptions) {
         this.tariffName = tariffName;
@@ -28,6 +23,7 @@ public class Message implements Serializable {
                 ", tariffOptions=" + tariffOptions +
                 '}';
     }
+
 
     public String getTariffName() {
         return tariffName;

@@ -2,7 +2,6 @@ package javaschool.epromo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.*;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 import javax.faces.bean.ManagedBean;
@@ -16,13 +15,8 @@ import java.util.concurrent.TimeoutException;
 public class Receiver {
 
     private Message message;
-    private String hello = "hello";
 
     public Receiver() {
-    }
-
-    public Receiver(Message message) {
-        this.message = message;
     }
 
     public Message getMessage() {
@@ -33,13 +27,6 @@ public class Receiver {
         this.message = message;
     }
 
-    public String getHello() {
-        return hello;
-    }
-
-    public void setHello(String hello) {
-        this.hello = hello;
-    }
 
     public void run() throws IOException, TimeoutException {
         System.out.println("Receiver has been started.");
