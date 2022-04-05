@@ -1,8 +1,11 @@
 package javaschool.epromo;
 
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 import java.util.List;
 
+@Component
 public class Message implements Serializable {
 
     private String tariffName;
