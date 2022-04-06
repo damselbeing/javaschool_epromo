@@ -1,23 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-<body style="margin: 35px">
-<input id="messageField" type="text">
-<input onclick="sendMsg();" value="send" type="button">
-<div id="msg-box" style="width:500px; height: 400px; background: #eee; overflow:auto;"></div>
+<head>
+    <style>
+        html, body {
+            height: 100%;
+            padding: 0;
+            color: #484747;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .main {
+            background-color: #fff490;
+            padding: 60px;
+            text-align: center;
+        }
+        .title {
+            font-size: 4rem;
+            text-align: center;
+        }
+        .description {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            margin-top: 30px;
+        }
+        .tariff-options-title {
+            font-size: 2rem;
+        }
+        .tariff-name {
+            font-size: 2.5rem;
+        }
+        .tariff-options-title {
+            margin-bottom: 10px;
+        }
+        .tariff-options {
+            margin-top: 30px;
+        }
+        .tariff-options-list {
+            font-size: 2rem;
+            font-style: italic;
+        }
+        .title,
+        .tariff-name {
+            font-weight: bold;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<main class="main">
+    <section class="title">
+        ePromo
+    </section>
+    <section class="description">
+        We are glad to offer you
+        our HOT Tariff
+    </section>
+    <section class="tariff-name">
+        <span id="tariff-name"></span>
+    </section>
+    <section id="tariff-options" class="tariff-options hidden">
+        <div class="tariff-options-title">with options:</div>
+        <div id="tariff-options-list" class="tariff-options-list"></div>
+    </section>
+</main>
 
 <script>
     var webSocket = new WebSocket("ws://localhost:9901/myHandler");
     var msgField = document.getElementById("messageField");
-    var divMsg = document.getElementById("msg-box");
-    function sendMsg() {
-        var msgToSend = msgField.value;
-        webSocket.send(msgToSend);
-        divMsg.innerHTML += "<div style='color:green'>Client> " + msgToSend +
-            "</div>"
-        msgField.value = "";
-    };
+    var tariffNameElement = document.getElementById("tariff-name");
+    var tariffOptionsElement = document.getElementById("tariff-options");
+    var tariffOptionsListElement = document.getElementById("tariff-options-list");
+
+    const createDiv = (text) => {
+        const div = document.createElement("div");
+        div.innerText = text;
+        return div;
+    }
+
     webSocket.onmessage = function(message) {
-        divMsg.innerHTML = "Server> : " + message.data;
+        const { tariffName, tariffOptions } = JSON.parse(message.data);
+        tariffNameElement.innerText = tariffName;
+
+        tariffOptionsListElement.innerHTML = '';
+        tariffOptions.forEach((option) => {
+            const div = createDiv(option);
+            tariffOptionsListElement.appendChild(div);
+        });
+        tariffOptionsElement.classList.toggle("hidden", tariffOptions.length === 0);
     };
     webSocket.onopen = function() {
         console.log("connection opened");
@@ -28,14 +103,6 @@
     webSocket.onerror = function wserror(message) {
         console.log("error: " + message);
     };
-
-    document.getElementById("messageField")
-        .addEventListener("keyup", function(event) {
-            event.preventDefault();
-            if (event.keyCode === 13) {
-                sendMsg();
-            }
-        });
 </script>
 </body>
 </html>
