@@ -12,11 +12,11 @@ import java.util.concurrent.TimeoutException;
 @Component
 @ManagedBean(name = "receiver")
 @SessionScoped
-public class Receiver {
+public class MQReceiver {
 
     private Message message;
 
-    public Receiver() {
+    public MQReceiver() {
     }
 
     public Message getMessage() {

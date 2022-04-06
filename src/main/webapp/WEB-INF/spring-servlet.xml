@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:websocket="http://www.springframework.org/schema/websocket"
@@ -8,16 +7,10 @@
         http://www.springframework.org/schema/websocket
         https://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
-    <websocket:handlers  allowed-origins="*">
-        <websocket:mapping path="/websocketService" handler="websocketService"/>
-        <websocket:handshake-interceptors>
-            <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
-        </websocket:handshake-interceptors>
+    <websocket:handlers>
+        <websocket:mapping path="/myHandler" handler="myHandler"/>
     </websocket:handlers>
 
-    <bean id="websocketService" class="javaschool.epromo.SocketHandler"/>
+    <bean id="myHandler" class="javaschool.epromo.WSHandler"/>
 
 </beans>
-
-
-
