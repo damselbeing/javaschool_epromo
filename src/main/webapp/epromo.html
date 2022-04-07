@@ -98,11 +98,18 @@
         console.log("connection opened");
     };
     webSocket.onclose = function() {
-        console.log("connection closed");
+        webSocket.close();
+        console.log("connection closed after onclose");
     };
     webSocket.onerror = function wserror(message) {
         console.log("error: " + message);
     };
+
+    window.onbeforeunload = function() {
+        webSocket.onclose;
+        console.log("connection closed after refresh");
+    }
+
 </script>
 </body>
 </html>

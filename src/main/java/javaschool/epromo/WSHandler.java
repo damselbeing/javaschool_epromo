@@ -2,17 +2,33 @@ package javaschool.epromo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.*;
+import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+@Component
 public class WSHandler extends TextWebSocketHandler {
+
+    private final List<WebSocketSession> sessions = new ArrayList<>();
+
+    public WSHandler() {
+    }
+
+    public List<WebSocketSession> getSessions() {
+        return sessions;
+    }
 
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        sessions.add(session);
+
         System.out.println("Receiver has been started.");
         ObjectMapper objectMapper = new ObjectMapper();
         ConnectionFactory factory = new ConnectionFactory();
@@ -37,7 +53,9 @@ public class WSHandler extends TextWebSocketHandler {
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        session.sendMessage(new TextMessage("echo: "+message.getPayload()));
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
+        sessions.remove(session);
     }
+
+
 }
