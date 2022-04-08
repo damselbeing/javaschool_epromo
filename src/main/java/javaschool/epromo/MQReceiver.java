@@ -1,51 +1,68 @@
 package javaschool.epromo;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.*;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.ContextStartedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
-@Component
-@ManagedBean(name = "receiver")
-@SessionScoped
+@Controller
+@Log4j2
 public class MQReceiver {
 
-    private Message message;
+    @Autowired
+    WSHandler myHandler;
 
-    public MQReceiver() {
-    }
+    static int ctxIdx = 0;
 
-    public Message getMessage() {
-        return message;
-    }
+//    @EventListener
+//    public void handleEvent(ContextRefreshedEvent historyEvent) {
+//        log.info(">>>>>>>>            instanceOf: " + historyEvent.getClass().getName());
+//    }
 
-    public void setMessage(Message message) {
-        this.message = message;
-    }
-
-
+    @EventListener(ContextRefreshedEvent.class)
     public void run() throws IOException, TimeoutException {
-        System.out.println("Receiver has been started.");
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
+        ctxIdx += 1;
+        int copy = ctxIdx;
+        System.out.println("Receiver has been started." + copy);
         ConnectionFactory factory = new ConnectionFactory();
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
         channel.queueDeclare("pop_tariff", false, false, false, null);
-
         channel.basicConsume("pop_tariff", true, new DeliverCallback() {
             @Override
             public void handle(String myId, Delivery delivery) throws IOException {
                 String json = new String(delivery.getBody(), "UTF-8");
+                TextMessage msg = new TextMessage(json);
+                System.out.println("AMOUNT" + myHandler.getSessions().size() + " " + copy);
+                myHandler.getSessions().forEach(s-> {
+                    try {
+                        s.sendMessage(msg);
+                        System.out.println("YES!!!!!! " + copy);
+                    } catch (IOException e) {
+                        System.out.println("MURK!!!!!!");
+                        e.printStackTrace();
+                    }
+                });
                 System.out.println("received message: " + json);
-                Message message = objectMapper.readValue(json, Message.class);
-                setMessage(message);
-                System.out.println("set message " + getMessage());
+
             }
         }, new CancelCallback() {
             @Override
@@ -53,4 +70,7 @@ public class MQReceiver {
             }
         });
     }
+
+
+
 }

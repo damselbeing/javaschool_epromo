@@ -1,9 +1,18 @@
 package javaschool.epromo;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 import java.util.List;
 
+@Component
 public class Message implements Serializable {
+
+//    @Bean
+//    WSHandler myHandler() {
+//        return new WSHandler();
+//    }
 
     private String tariffName;
     private List<String> tariffOptions;
