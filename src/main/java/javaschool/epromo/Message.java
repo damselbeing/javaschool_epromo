@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.util.List;
 
-@Component
+
 public class Message implements Serializable {
 
 //    @Bean
@@ -14,40 +14,40 @@ public class Message implements Serializable {
 //        return new WSHandler();
 //    }
 
-    private String tariffName;
-    private List<String> tariffOptions;
-
-    public Message() {
-    }
-
-    public Message(String tariffName, List<String> tariffOptions) {
-        this.tariffName = tariffName;
-        this.tariffOptions = tariffOptions;
-    }
-
-    @Override
-    public String toString() {
-        return "Message{" +
-                "tariffName='" + tariffName + '\'' +
-                ", tariffOptions=" + tariffOptions +
-                '}';
-    }
-
-
-    public String getTariffName() {
-        return tariffName;
-    }
-
-    public void setTariffName(String tariffName) {
-        this.tariffName = tariffName;
-    }
-
-    public List<String> getTariffOptions() {
-        return tariffOptions;
-    }
-
-    public void setTariffOptions(List<String> tariffOptions) {
-        this.tariffOptions = tariffOptions;
-    }
+//    private String tariffName;
+//    private List<String> tariffOptions;
+//
+//    public Message() {
+//    }
+//
+//    public Message(String tariffName, List<String> tariffOptions) {
+//        this.tariffName = tariffName;
+//        this.tariffOptions = tariffOptions;
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return "Message{" +
+//                "tariffName='" + tariffName + '\'' +
+//                ", tariffOptions=" + tariffOptions +
+//                '}';
+//    }
+//
+//
+//    public String getTariffName() {
+//        return tariffName;
+//    }
+//
+//    public void setTariffName(String tariffName) {
+//        this.tariffName = tariffName;
+//    }
+//
+//    public List<String> getTariffOptions() {
+//        return tariffOptions;
+//    }
+//
+//    public void setTariffOptions(List<String> tariffOptions) {
+//        this.tariffOptions = tariffOptions;
+//    }
 
 }

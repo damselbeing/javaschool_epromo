@@ -47,11 +47,25 @@
     <load-on-startup>1</load-on-startup>
   </servlet>
 
-
   <servlet-mapping>
     <servlet-name>spring</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/error.html</location>
+  </error-page>
+
+  <error-page>
+    <error-code>400</error-code>
+    <location>/error.html</location>
+  </error-page>
+
+  <error-page>
+    <error-code>500</error-code>
+    <location>/error.html</location>
+  </error-page>
 
 <!--  <context-param>-->
 <!--    <param-name>javax.faces.ENABLE_WEBSOCKET_ENDPOINT</param-name>-->

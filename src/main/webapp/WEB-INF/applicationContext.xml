@@ -1,22 +1,3 @@
-<!--<beans xmlns="http://www.springframework.org/schema/beans"-->
-<!--       xmlns:context="http://www.springframework.org/schema/context"-->
-<!--       xmlns:mvc="http://www.springframework.org/schema/mvc"-->
-<!--       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
-
-<!--       xsi:schemaLocation="-->
-<!--        http://www.springframework.org/schema/beans-->
-<!--        http://www.springframework.org/schema/beans/spring-beans.xsd-->
-<!--        http://www.springframework.org/schema/context-->
-<!--        http://www.springframework.org/schema/context/spring-context.xsd-->
-<!--        http://www.springframework.org/schema/mvc-->
-<!--        http://www.springframework.org/schema/mvc/spring-mvc.xsd">-->
-
-<!--    <context:component-scan base-package="javaschool.epromo" />-->
-<!--    <mvc:default-servlet-handler/>-->
-<!--    <mvc:annotation-driven/>-->
-
-<!--</beans>-->
-
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:websocket="http://www.springframework.org/schema/websocket"
@@ -26,11 +7,11 @@
         http://www.springframework.org/schema/websocket
         https://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
-<websocket:handlers>
-    <websocket:mapping path="/myHandler" handler="myHandler"/>
-</websocket:handlers>
+    <websocket:handlers>
+        <websocket:mapping path="/myHandler" handler="myHandler"/>
+    </websocket:handlers>
 
-<bean id="myHandler" class="javaschool.epromo.WSHandler"/>
+    <bean id="myHandler" class="javaschool.epromo.WSHandler"/>
 
 
 </beans>

@@ -1,18 +1,19 @@
 package javaschool.epromo;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rabbitmq.client.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.io.IOException;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
+@Log4j2
 @Component
 public class WSHandler extends TextWebSocketHandler {
 
@@ -26,37 +27,30 @@ public class WSHandler extends TextWebSocketHandler {
         return sessions;
     }
 
-
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         sessions.add(session);
+        log.info("Session has been started.");
 
-//        System.out.println("Receiver has been started.");
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        ConnectionFactory factory = new ConnectionFactory();
-//        Connection connection = factory.newConnection();
-//        Channel channel = connection.createChannel();
-//        channel.queueDeclare("pop_tariff", false, false, false, null);
-//        channel.basicConsume("pop_tariff", true, new DeliverCallback() {
-//            @Override
-//            public void handle(String myId, Delivery delivery) throws IOException {
-//                String json = new String(delivery.getBody(), "UTF-8");
-//                System.out.println("received message: " + json);
-////                Message message = objectMapper.readValue(json, Message.class);
-//                TextMessage message = new TextMessage(json);
-//                session.sendMessage(message);
-//            }
-//        }, new CancelCallback() {
-//            @Override
-//            public void handle(String myId) throws IOException {
-//            }
-//        });
+        try (Scanner scanner = new Scanner(new File("msgFromEcare.txt"))) {
+            while (scanner.hasNext()) {
+                String json = scanner.nextLine();
+                log.info("---1. msg got from txt is " + json);
+                TextMessage message = new TextMessage(json);
+                session.sendMessage(message);
+                log.info("---2=1. msg sent to session is " + json);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            log.error("---!!! error occurred while msg sending to session");
 
+        }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         sessions.remove(session);
+        log.info("Session has been closed.");
     }
 
 
