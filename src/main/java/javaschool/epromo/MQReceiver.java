@@ -21,6 +21,11 @@ public class MQReceiver {
 
     static int contextId = 0;
 
+    /**
+     * Starts the connection to Ecare and sends a message to all the sessions.
+     * @throws IOException if the connection has not been created.
+     * @throws TimeoutException if the connection has not been created.
+     */
     @EventListener(ContextRefreshedEvent.class)
     public void run() throws IOException, TimeoutException {
         contextId += 1;

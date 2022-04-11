@@ -27,6 +27,11 @@ public class WSHandler extends TextWebSocketHandler {
         return sessions;
     }
 
+    /**
+     * Adds the session to the sessions' list and displays the message from Ecare.
+     * @param session: the open session.
+     * @throws Exception if any session problems occur.
+     */
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         sessions.add(session);
@@ -47,6 +52,11 @@ public class WSHandler extends TextWebSocketHandler {
         }
     }
 
+    /**
+     * Removes the session from the session's list.
+     * @param session: the open session.
+     * @param status: the open session's status.
+     */
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         sessions.remove(session);

@@ -59,7 +59,10 @@
     </section>
     <section class="description">
         We are glad to offer you
-        our HOT Tariff
+        our HOT Tariff:
+    </section>
+    <section id="loading" class="description">
+       loading ...
     </section>
     <section class="tariff-name">
         <span id="tariff-name"></span>
@@ -76,6 +79,7 @@
     var tariffNameElement = document.getElementById("tariff-name");
     var tariffOptionsElement = document.getElementById("tariff-options");
     var tariffOptionsListElement = document.getElementById("tariff-options-list");
+    var loading = document.getElementById("loading");
 
     const createDiv = (text) => {
         const div = document.createElement("div");
@@ -93,6 +97,7 @@
             tariffOptionsListElement.appendChild(div);
         });
         tariffOptionsElement.classList.toggle("hidden", tariffOptions.length === 0);
+        loading.classList.toggle("hidden", Boolean(tariffName));
     };
     webSocket.onopen = function() {
         console.log("connection opened");
